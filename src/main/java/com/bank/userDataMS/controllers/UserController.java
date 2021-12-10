@@ -35,8 +35,6 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Ya existe un usuario con ese username. Creación de usuario declinada.");
         }
         user.setState(true);
-        user.setAccount(false);
-        user.setForex(false);
         return userRepository.save(user);
     }
 
@@ -53,7 +51,7 @@ public class UserController {
     @PutMapping("/{username}")
     User updateUser(@PathVariable String username, @RequestBody User userUpdate) {
         if (userRepository.existsById(username) == false) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay un usuario asociado a " + username);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay un usuario asociado a " + username + ". Actualizaión declinada");
         }
         userRepository.save(userUpdate);
         return userUpdate;
@@ -88,8 +86,6 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No hay un usuario asociado a " + username + ". Activación declinada.");
         }
         user.setState(userUpdate.isState());
-        user.setAccount(userUpdate.isAccount());
-        user.setForex(userUpdate.isForex());
         userRepository.save(user);
         return user;
     }
